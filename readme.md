@@ -23,28 +23,94 @@ Projekt może znaleźć zastosowanie m.in. w systemach call center do analizy na
 ---
 
 ## **3. Dane**
-**Źródło danych:**
-RAVDESS, CREMA-D
 
-**Linki do danych:**
-- RAVDESS: `https://zenodo.org/record/1188976`
-- CREMA-D: `https://github.com/CheyneyComputerScience/CREMA-D`
+**Źródło danych:**  
+RAVDESS *(Ryerson Audio-Visual Database of Emotional Speech and Song)*
 
-**Opis danych:**
-- format danych: pliki audio (.wav)
-- rodzaj etykiet / klas: emocje (radość, smutek, złość, neutralność i inne, zależnie od zbioru)
-- RAVDESS: ~7300 nagrań, 24 aktorów, 8 emocji
-- CREMA-D: ~7400 nagrań, 91 aktorów, 6 emocji
-- licencja: RAVDESS – CC BY-NC-SA 4.0; CREMA-D – Open Database License
+**Link do pobrania pełnego zbioru:**  
+`https://zenodo.org/record/1188976` - plik `Audio_Speech_Actors_01-24.zip` (~200 MB)
 
-**Uwaga dotycząca danych:**
-Nie wrzucaj do repozytorium pełnego zbioru danych!
-- Zamieść **jedynie niewielką próbkę** (np. kilka plików `.wav`) w folderze `data/sample/`, aby pokazać strukturę danych.
-- Pełen zbiór powinien być pobierany osobno zgodnie z instrukcją w sekcji poniżej lub przez link w README.
-- Dzięki temu repozytorium pozostanie czyste i zgodne z zasadami licencyjnymi.
+**Opis zbioru:**
 
-**Uwagi dotyczące preprocessingu:**
-*(np. ujednolicenie częstotliwości próbkowania do 22050 Hz, przycięcie ciszy, augmentacja danych, itp.)*
+| Cecha | Wartość |
+|-------|---------|
+| Liczba nagrań (speech) | 1440 plików `.wav` |
+| Liczba aktorów | 24 (12 kobiet, 12 mężczyzn) |
+| Liczba klas emocji | 8 |
+| Poziomy intensywności | normal, strong |
+| Częstotliwość próbkowania | 48 000 Hz (surowe) |
+| PCM | 16 bit |
+| Czas trwania nagrania | ~3–4 s |
+| Licencja | CC BY-NC-SA 4.0 |
+
+**Klasy emocji (kod - etykieta):**
+
+| Kod | Emocja | Liczba próbek |
+|-----|--------|---------------|
+| 01 | neutral (neutralna) | 96 |
+| 02 | calm (spokojna) | 96 |
+| 03 | happy (radosna) | 192 |
+| 04 | sad (smutna) | 192 |
+| 05 | angry (zła) | 192 |
+| 06 | fearful (przestraszona) | 192 |
+| 07 | disgust (odraza) | 192 |
+| 08 | surprised (zaskoczona) | 192 |
+
+> **Uwaga:** klasy *neutral* i *calm* mają mniej próbek, ponieważ dla tych emocji nagrano wyłącznie normalną intensywność (brak wersji z mocną intensywnością).
+
+**Schemat nazewnictwa plików:**  
+`MM-VV-EE-II-SS-RR-AA.wav`  
+np. `03-01-05-02-01-01-12.wav` - audio-only, mowa, zły, silna intensywność, zdanie 1, powtórzenie 1, aktor 12 (kobieta)
+
+| Pozycja | Opis |
+|---------|------|
+| MM=03 | Modalność: audio-only |
+| VV=01 | Kanał: mowa |
+| EE | Emocja (01–08) |
+| II | Intensywność: 01=normalna, 02=mocna |
+| SS | Zdanie: 01="Kids are talking by the door", 02="Dogs are sitting by the door" |
+| RR | Powtórzenie: 01 lub 02 |
+| AA | Numer aktora: 01–24 (nieparzyste=mężczyźni, parzyste=kobiety) |
+
+**Próbka danych – RAVDESS:**  
+Folder `data/sample/ravdess/` zawiera kilka przykładowych nagrań ze zbioru
+
+**Instrukcja pobrania pełnego zbioru RAVDESS:**
+
+---
+
+### CREMA-D *(Crowd-Sourced Emotional Multimodal Actors Dataset)*
+
+**Link do pobrania:** `https://github.com/CheyneyComputerScience/CREMA-D`
+
+| Cecha | Wartość |
+|-------|---------|
+| Liczba nagrań | 7442 plików `.wav` |
+| Liczba aktorów | 91 (48 mężczyzn, 43 kobiety) |
+| Liczba klas emocji | 6 |
+| Poziomy intensywności | LO, MD, HI, XX |
+| Częstotliwość próbkowania | 16 000 Hz (surowe) |
+| PCM | 16 bit |
+| Liczba zdań | 12 |
+| Licencja | Open Database License (ODbL) |
+
+**Klasy emocji (kod - etykieta):**
+
+| Kod | Emocja |
+|-----|--------|
+| ANG | angry (zły) |
+| DIS | disgust (odraza) |
+| FEA | fearful (przestraszony) |
+| HAP | happy (radosny) |
+| NEU | neutral (neutralny) |
+| SAD | sad (smutny) |
+
+**Schemat nazewnictwa plików:**  
+`ActorID_SentenceID_Emotion_Level.wav`  
+np. `1001_DFA_ANG_XX.wav` - Aktor 1001, zdanie "Don't forget a jacket", zły, poziom nieoznaczony
+
+**Próbka danych – CREMA-D:**  
+Folder `data/sample/cremad/` zawiera kilka przykładowych nagrań
 
 ---
 
@@ -119,18 +185,21 @@ accuracy, precision, recall, F1-score (macro/weighted), macierz pomyłek
 
 ## **9. Struktura repozytorium**
 ```
-projekt_zum_2025/
+zum/
 │
 ├── data/
-│   ├── sample/          # mała próbka nagrań audio
-│   └── processed/       # wektory cech / spektrogramy
+│   ├── sample/          # próbka RAVDESS – 16 plików .wav (2 per emocja)
+│   │   └── cremad/      # próbka CREMA-D – 12 plików .wav (2 per emocja)
+│   ├── ravdess/         # pełny zbiór RAVDESS – pobierz lokalnie (nie w repo)
+│   ├── cremad/          # pełny zbiór CREMA-D – pobierz lokalnie (nie w repo)
+│   └── processed/       # wektory cech / spektrogramy (generowane w notebooku 2)
 ├── notebooks/
-│   ├── 1_EDA.ipynb
-│   ├── 2_Preprocessing_Features.ipynb
-│   ├── 3_Models_Training.ipynb
-│   └── 4_Evaluation.ipynb
+│   ├── 1_EDA.ipynb                        # ✅ analiza eksploracyjna
+│   ├── 2_Preprocessing_Features.ipynb     # ekstrakcja cech MFCC / mel
+│   ├── 3_Models_Training.ipynb            # trening modeli
+│   └── 4_Evaluation.ipynb                 # ewaluacja i porównanie
 ├── models/              # zapisane modele (.pkl, .pt, .h5)
-├── results/             # wykresy, macierze pomyłek
+├── results/             # wykresy generowane przez notebooki
 ├── README.md
 └── requirements.txt
 ```
