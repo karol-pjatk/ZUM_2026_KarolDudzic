@@ -1,4 +1,4 @@
-# **Projekt zaliczeniowy – Zastosowania Uczenia Maszynowego**
+# **Projekt zaliczeniowy - Zastosowania Uczenia Maszynowego**
 
 ## **1. Informacje ogólne**
 **Nazwa projektu:**
@@ -16,7 +16,7 @@ dd.mm.rrrr
 ---
 
 ## **2. Opis projektu**
-Celem projektu jest automatyczne rozpoznawanie emocji na podstawie nagrań mowy. Na podstawie cech akustycznych sygnału audio – takich jak ton (pitch), tempo mówienia, energia sygnału oraz mel-spektrogram – model klasyfikuje emocje mówiącego do jednej z kategorii: radość, smutek, złość lub neutralność.
+Celem projektu jest automatyczne rozpoznawanie emocji na podstawie nagrań mowy. Na podstawie cech akustycznych sygnału audio - takich jak ton (pitch), tempo mówienia, energia sygnału oraz mel-spektrogram - model klasyfikuje emocje mówiącego do jednej z kategorii: radość, smutek, złość lub neutralność.
 
 Projekt może znaleźć zastosowanie m.in. w systemach call center do analizy nastrojów klientów, w asystentach głosowych, w psychologii klinicznej do monitorowania stanu emocjonalnego pacjentów, a także w grach i aplikacjach interaktywnych reagujących na nastrój użytkownika.
 
@@ -40,7 +40,7 @@ RAVDESS *(Ryerson Audio-Visual Database of Emotional Speech and Song)*
 | Poziomy intensywności | normal, strong |
 | Częstotliwość próbkowania | 48 000 Hz (surowe) |
 | PCM | 16 bit |
-| Czas trwania nagrania | ~3–4 s |
+| Czas trwania nagrania | ~3-4 s |
 | Licencja | CC BY-NC-SA 4.0 |
 
 **Klasy emocji (kod - etykieta):**
@@ -66,13 +66,13 @@ np. `03-01-05-02-01-01-12.wav` - audio-only, mowa, zły, silna intensywność, z
 |---------|------|
 | MM=03 | Modalność: audio-only |
 | VV=01 | Kanał: mowa |
-| EE | Emocja (01–08) |
+| EE | Emocja (01-08) |
 | II | Intensywność: 01=normalna, 02=mocna |
 | SS | Zdanie: 01="Kids are talking by the door", 02="Dogs are sitting by the door" |
 | RR | Powtórzenie: 01 lub 02 |
-| AA | Numer aktora: 01–24 (nieparzyste=mężczyźni, parzyste=kobiety) |
+| AA | Numer aktora: 01-24 (nieparzyste=mężczyźni, parzyste=kobiety) |
 
-**Próbka danych – RAVDESS:**  
+**Próbka danych - RAVDESS:**  
 Folder `data/sample/ravdess/` zawiera kilka przykładowych nagrań ze zbioru
 
 **Instrukcja pobrania pełnego zbioru RAVDESS:**
@@ -109,7 +109,7 @@ Folder `data/sample/ravdess/` zawiera kilka przykładowych nagrań ze zbioru
 `ActorID_SentenceID_Emotion_Level.wav`  
 np. `1001_DFA_ANG_XX.wav` - Aktor 1001, zdanie "Don't forget a jacket", zły, poziom nieoznaczony
 
-**Próbka danych – CREMA-D:**  
+**Próbka danych - CREMA-D:**  
 Folder `data/sample/cremad/` zawiera kilka przykładowych nagrań
 
 ---
@@ -201,13 +201,13 @@ accuracy, precision, recall, F1-score (macro/weighted), macierz pomyłek
 zum/
 │
 ├── data/
-│   ├── sample/          # próbka RAVDESS – 16 plików .wav (2 per emocja)
-│   │   └── cremad/      # próbka CREMA-D – 12 plików .wav (2 per emocja)
-│   ├── ravdess/         # pełny zbiór RAVDESS – pobierz lokalnie (nie w repo)
-│   ├── cremad/          # pełny zbiór CREMA-D – pobierz lokalnie (nie w repo)
-│   └── processed/       # wektory cech / spektrogramy (generowane w notebooku 2)
+│   ├── sample/
+│   │   └── ravdess/     # próbka RAVDESS
+│   │   └── cremad/      # próbka CREMA-D
+│   ├── ravdess/         # pełny zbiór RAVDESS - lokalnie (nie w repo)
+│   ├── cremad/          # pełny zbiór CREMA-D - lokalnie (nie w repo)
 ├── notebooks/
-│   ├── 1_EDA.ipynb                        # ✅ analiza eksploracyjna
+│   ├── 1_EDA.ipynb                        # analiza eksploracyjna
 │   ├── 2_Preprocessing_Features.ipynb     # ekstrakcja cech MFCC / mel
 │   ├── 3_Models_Training.ipynb            # trening modeli
 │   └── 4_Evaluation.ipynb                 # ewaluacja i porównanie
@@ -222,7 +222,7 @@ zum/
 ## **10. Technologia i biblioteki**
 - Python 3.x
 - NumPy, Pandas, Matplotlib, Seaborn
-- librosa – ekstrakcja cech audio (MFCC, mel-spektrogram, pitch, energia)
+- librosa - ekstrakcja cech audio (MFCC, mel-spektrogram, pitch, energia)
 - scikit-learn
 - TensorFlow lub PyTorch
 - HuggingFace Transformers (wav2vec 2.0 / HuBERT)
@@ -233,4 +233,4 @@ zum/
 Projekt udostępniony na licencji:
 *(np. MIT License)*
 
-Źródła danych: zgodnie z licencjami wskazanymi w sekcji **Dane** (RAVDESS – CC BY-NC-SA 4.0; CREMA-D – ODbL).
+Źródła danych: zgodnie z licencjami wskazanymi w sekcji **Dane** (RAVDESS - CC BY-NC-SA 4.0; CREMA-D - ODbL).
