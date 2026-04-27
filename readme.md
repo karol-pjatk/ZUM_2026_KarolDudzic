@@ -137,19 +137,32 @@ Projekt składa się z czterech głównych etapów, każdy w osobnym notatniku `
 Projekt obejmuje trzy różne podejścia do modelowania danych:
 
 ### **6.1 Model klasyczny ML**
-- Algorytm: *(np. SVM, Random Forest, Gradient Boosting)*
-- Krótki opis: klasyfikacja na podstawie wektorów cech akustycznych (MFCC, energia, pitch)
+**Algorytm SVM** - **Klasyfikacja na podstawie wektorów cech akustycznych**
+| Cecha | Wymiar | Uzasadnienie |
+|-------|--------|------------- |
+| MFCC (N=40): mean + std | 80 | Kształt spektrum - podstawowa cecha w SER |
+| Δ MFCC: mean + std | 80 | Dynamika zmian spektrum |
+| ΔΔ MFCC: mean + std | 80 | Przyspieszenie zmian - odzwierciedla akcent i rytm |
+| ZCR: mean + std | 2 | Szorstkość głosu |
+| RMS energia: mean + std | 2 | Głośność (złość/radość > smutek/neutralność) |
+| Spectral centroid: mean + std | 2 | "Jasność" brzmienia |
+| Spectral bandwidth: mean + std | 2 | Szerokość pasma |
+| Spectral rolloff: mean + std | 2 | Granica częstotliwości 85% energii |
+| Chroma STFT (12 bins): mean + std | 24 | Profil tonalny głosu |
+| Spectral contrast (7 pasm): mean + std | 14 | Różnica szczyt/dolina widma - faktura dźwięku |
+| **Razem** | **288** | |
+
 - Wyniki / metryki: *(do uzupełnienia)*
 
-### **6.2 Sieć neuronowa zbudowana od zera**
-- Architektura: *(np. CNN na mel-spektrogramach, LSTM na sekwencjach MFCC)*
+### **6.2 Sieć neuronowa**
+**Sieć CNN analizująca spektrogramy melowe**
+
 - Liczba warstw / neuronów: *(do uzupełnienia)*
 - Funkcje aktywacji i optymalizator: *(do uzupełnienia)*
 - Wyniki: *(do uzupełnienia)*
 
 ### **6.3 Model transformerowy (fine-tuning)**
-- Nazwa modelu: *(np. wav2vec 2.0, HuBERT, Whisper)*
-- Biblioteka: HuggingFace Transformers
+**Model transformerowy HuBERT**
 - Zakres dostosowania: fine-tuning klasyfikatora emocji na wybranych zbiorach danych
 - Wyniki: *(do uzupełnienia)*
 
