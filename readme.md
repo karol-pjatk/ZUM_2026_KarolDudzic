@@ -128,7 +128,7 @@ Projekt składa się z czterech głównych etapów, każdy w osobnym notatniku `
 |------|--------------|------|
 | 1 | `1_EDA.ipynb` | Analiza danych audio, wizualizacje sygnałów, rozkład klas emocji |
 | 2 | `2_Preprocessing_Features.ipynb` | Ekstrakcja cech (MFCC, mel-spektrogram, pitch, energia), normalizacja |
-| 3 | `3_Models_Training.ipynb` | Trening modeli klasycznego ML, sieci neuronowej i modelu transformerowego |
+| 3 | `3_Models_Training.ipynb` | Trening modeli SVM, CNN oraz modelu transformerowego HuBERT |
 | 4 | `4_Evaluation.ipynb` | Ewaluacja, porównanie modeli, wizualizacje wyników |
 
 ---
@@ -152,29 +152,33 @@ Projekt obejmuje trzy różne podejścia do modelowania danych:
 | Spectral contrast (7 pasm): mean + std | 14 | Różnica szczyt/dolina widma - faktura dźwięku |
 | **Razem** | **288** | |
 
-- Wyniki / metryki: *(do uzupełnienia)*
-
 ### **6.2 Sieć neuronowa**
 **Sieć CNN analizująca spektrogramy melowe**
-
-- Liczba warstw / neuronów: *(do uzupełnienia)*
-- Funkcje aktywacji i optymalizator: *(do uzupełnienia)*
-- Wyniki: *(do uzupełnienia)*
+Sieć o czterech warstwach konwolucyjnych. Struktura:
+```
+(batch, 1, 128, 94)
+  ↓ Conv2d(1→f1, 3x3) + BN + ReLU + MaxPool(2)
+  ↓ Conv2d(f1→f2, 3x3) + BN + ReLU + MaxPool(2)
+  ↓ Conv2d(f2→f3, 3x3) + BN + ReLU + MaxPool(2)
+  ↓ Conv2d(f3→f4, 3x3) + BN + ReLU + MaxPool(2)
+  ↓ GlobalAveragePooling(dim=[H, W])
+  ↓ Linear(f4 to 256) + ReLU + Dropout
+  ↓ Linear(256 to 6)
+```
 
 ### **6.3 Model transformerowy (fine-tuning)**
 **Model transformerowy HuBERT**
-- Zakres dostosowania: fine-tuning klasyfikatora emocji na wybranych zbiorach danych
-- Wyniki: *(do uzupełnienia)*
+Fine-tuning klasyfikatora emocji na wybranych zbiorach danych
 
 ---
 
 ## **7. Ewaluacja**
 **Użyte metryki:**
-accuracy, precision, recall, F1-score (macro/weighted), macierz pomyłek
+accuracy, precision, recall, F1-score, macierz pomyłek
 
 **Porównanie modeli:**
 
-| Model | Metryka główna | Wynik | Uwagi |
+| Model | F1-score | Wynik | Uwagi |
 |--------|----------------|--------|--------|
 | Klasyczny ML |  |  |  |
 | Sieć neuronowa |  |  |  |
