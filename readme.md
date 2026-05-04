@@ -11,7 +11,7 @@ Karol Dudzic
 Informatyka, semestr III, studia II stopnia z wykorzystaniem metod i technik kształcenia na odległość
 
 **Data oddania projektu:**
-dd.mm.rrrr
+04.05.2026
 
 ---
 
@@ -115,9 +115,8 @@ Folder `data/sample/cremad/` zawiera kilka przykładowych nagrań
 ---
 
 ## **4. Cel projektu**
-- **Co robi model?** Klasyfikuje nagranie mowy do jednej z klas emocjonalnych (np. radość, smutek, złość, neutralność).
-- **Jakie pytanie odpowiada?** Jaką emocję wyraża mówca w danym fragmencie nagrania?
-- **Zastosowania:** automatyczna analiza emocji w obsłudze klienta, wsparcie diagnostyki psychologicznej, interfejsy człowiek-komputer reagujące na nastrój użytkownika.
+Model odpowiada na pytanie jaką emocję wyraża mówca w danym fragmencie nagrania.
+Klasyfikacja nagrań mowy do jednej z 6 klas emocjonalnych (złość, niesmak, strach, radość, smutek, neutralność).
 
 ---
 
@@ -178,25 +177,38 @@ accuracy, precision, recall, F1-score, macierz pomyłek
 
 **Porównanie modeli:**
 
-| Model | F1-score | Wynik | Uwagi |
-|--------|----------------|--------|--------|
-| Klasyczny ML |  |  |  |
-| Sieć neuronowa |  |  |  |
-| Transformer |  |  |  |
+| Model | Accuracy | Macro Recall | Macro F1 | Czas inferencji (per próbka) |
+|-------|----------|--------------|----------|-------------------------------|
+| SVM | 52.8% | 52.8% | 52.4% | 0.88 ms |
+| Sieć CNN | 62.0% | 62.5% | 61.8% | 0.36 ms |
+| HuBERT Base | 73.5% | 74.2% | 73.3% | 3.99 ms |
 
-**Wizualizacje:**
-- Macierz pomyłek dla każdego modelu
-- Rozkład klas emocji w zbiorze danych
-- Wizualizacje mel-spektrogramów dla różnych emocji
-- Learning curve (krzywa uczenia)
+**Uwagi:**
+- Wszystkie modele testowano na tym samym zbiorze testowym (1318 próbek, 6 klas, podział stratyfikowany aktor-wise).
+- Klasa *neutral* jest nieco mniej liczna (183 vs 227 próbek pozostałych klas), co widoczne jest w wyższym recall przy niższej precision dla tej klasy - szczególnie w modelu HuBERT (recall 94.5%, precision 67.6%).
+- SVM osiąga najkrótszy czas inferencji pominąwszy narzut ładowania danych, jednak jego accuracy jest najniższe - różnica ~20 pp względem HuBERT.
+- HuBERT pomimo najdłuższego czasu inferencji wyprzedza pozostałe modele o znaczący margines we wszystkich metrykach.=
+
+*Wizualizacje* z ekstrakcji danych, treningu oraz ewaluacji do odnalezienia w katalogu results.
 
 ---
 
 ## **8. Wnioski i podsumowanie**
-- Który model okazał się najlepszy i dlaczego?
-- Jakie trudności pojawiły się podczas pracy? *(np. niezbalansowane klasy, różnice między zbiorami danych, szumy w nagraniach)*
-- Co można by poprawić w przyszłości? *(np. dane multimodalne: audio + tekst, więcej klas emocji)*
-- Jakie potencjalne zastosowania ma ten projekt?
+
+**Najlepszy model:** HuBERT Base z trafnością 73.5% i macro F1 73.3%. Przewaga wynika z pre-trainingu na dużym korpusie mowy - model rozumie strukturę akustyczną języka zanim zobaczy jakąkolwiek etykietę emocji. Fine-tuning pozwala wykorzystać tę wiedzę przy stosunkowo małym zbiorze treningowym.
+
+**Trudności podczas pracy:**
+- Scalenie zbiorów RAVDESS i CREMA-D wymagało ujednolicenia klas emocji. RAVDESS zawiera 8 klas, CREMA-D 6 - klasy *calm* i *surprised* obecne tylko w RAVDESS zostały porzucone ze względu na ich brak w drugim zbiorze, co spowodowało utratę części danych.
+- Po scaleniu klasa *neutral* pozostała mniej liczna niż pozostałe (brak wersji z mocną intensywnością w RAVDESS), co wymusiło świadomy dobór metryk - samo accuracy mogłoby maskować słabość modelu na tej klasie.
+- Czas treningu rośnie dramatycznie wraz ze złożonością modelu: SVM ~3 min, CNN ~kilkanaście minut, HuBERT ~1 godzina. Ma to bezpośrednie przełożenie na dobór hiperparametrów - grid search jest praktycznie wykluczony dla modeli transformerowych przy ograniczonych zasobach obliczeniowych. Parametry HuBERT dobierano ręcznie na podstawie wcześniejszych eksperymentów i literatury.
+
+**Co można poprawić:**
+- Augmentacja danych audio (pitch shift, dodawanie szumu, time stretch) została przetestowana, jednak nie przyniosła znaczącej poprawy wyników (1-2 pp).
+- Dla SVM przetestowano zarówno jądro liniowe, jak i RBF - wyniki były porównywalne, a wybór jądra zależał od zestawu cech.
+- HuBERT można by dalej fine-tunować z mniejszym learning rate lub zastosować większy wariant (HuBERT Large).
+- Warto byłoby przeprowadzić dokładniejszy dobór hiperparametrów dla CNN i HuBERT - zwiększenie przestrzeni przeszukiwań i zastosowanie grid search mogłoby poprawić wyniki, jednak przy ograniczonych zasobach obliczeniowych jest to kosztowne czasowo.
+
+Potencjalne zastosowania to automatyczna analiza emocji w obsłudze klienta, wsparcie diagnostyki psychologicznej czy interfejsy człowiek-komputer reagujące na nastrój użytkownika.
 
 ---
 
@@ -227,9 +239,9 @@ zum/
 - Python 3.x
 - NumPy, Pandas, Matplotlib, Seaborn
 - librosa - ekstrakcja cech audio (MFCC, mel-spektrogram, pitch, energia)
-- scikit-learn
-- TensorFlow lub PyTorch
-- HuggingFace Transformers (wav2vec 2.0 / HuBERT)
+- scikit-learn 
+- PyTorch
+- HuggingFace Transformers (HuBERT)
 
 ---
 
